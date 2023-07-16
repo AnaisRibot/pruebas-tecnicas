@@ -1,3 +1,4 @@
+import { StateContext } from "../context/StateContext";
 import "@styles/globals.css";
 
 export const metadata = {
@@ -8,8 +9,10 @@ export const metadata = {
 const layout = ({ children }) => {
   return (
     <html lang="en">
-      <body>
-        <main className="app">{children}</main>
+      <body className="bg-gradient-to-tr from-black to-[#575757]">
+        <StateContext>
+          <main>{children}</main>
+        </StateContext>
       </body>
     </html>
   );

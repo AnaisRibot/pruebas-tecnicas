@@ -1,14 +1,15 @@
+"use client";
 import BooksList from "@components/BooksList";
-import data from "../../../../01-reading-list/books.json";
+import { useStateContext } from "../context/StateContext";
+// import data from "../../../../01-reading-list/books.json";
 
 const page = () => {
-  let myList = [];
-  let listOfBooks = data.library;
+  const { library, myList } = useStateContext();
 
   return (
     <div>
-      <BooksList list={myList} />
-      <BooksList list={listOfBooks} />
+      <BooksList title="My reading list" list={myList} />
+      <BooksList title="Library" list={library} />
     </div>
   );
 };

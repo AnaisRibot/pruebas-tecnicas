@@ -1,18 +1,26 @@
 import Book from "./Book";
 
-const BooksList = ({ list }) => {
+const BooksList = ({ title, list }) => {
   if (list.length === 0)
     return (
-      <div>
-        <p>no books yet</p>
-      </div>
+      <section>
+        <h1 className="mt-4 font-semibold text-lg  text-white truncate">
+          {title}
+        </h1>
+        <p className="mt-4 font-semibold text-lg text-gray-500 truncate">
+          no books yet
+        </p>
+      </section>
     );
   return (
-    <ul>
-      {list.map((library) => (
-        <Book key={library.book.ISBN} book={library.book} />
+    <section>
+      <h1 className="mt-4 font-semibold text-lg  text-white truncate">
+        {title}
+      </h1>
+      {list.map((book) => (
+        <Book key={book.ISBN} book={book} list={title} />
       ))}
-    </ul>
+    </section>
   );
 };
 export default BooksList;
