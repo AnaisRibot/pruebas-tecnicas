@@ -1,7 +1,7 @@
 import Book from "./Book";
 
 const BooksList = ({ title, list }) => {
-  if (list.length === 0)
+  if (!list || list.length === 0)
     return (
       <section>
         <h1 className="mt-4 font-semibold text-lg  text-white truncate">

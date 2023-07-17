@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import data from "../../../../01-reading-list/books.json";
 // import { toast } from "react-hot-toast";
 
@@ -11,9 +11,30 @@ const bookDataMapper = (data) => {
 };
 
 export const StateContext = ({ children }) => {
-  const [library, setLibrary] = useState(bookDataMapper(data));
-  const [myList, setMyList] = useState([]);
-  console.log(library);
+  const [myList, setMyList] = useState(() => {
+    const saved = localStorage.getItem("myList");
+    const initialValue = JSON.parse(saved);
+    return initialValue || [];
+  });
+  console.log("library :", bookDataMapper(data));
+  console.log("my list : ", myList);
+  console.log(
+    "filtered library : ",
+    bookDataMapper(data).filter((book) => {
+      return myList.some((savedBook) => {
+        return savedBook.ISBN !== book.ISBN;
+      });
+    })
+  );
+
+  const [library, setLibrary] = useState(() => {
+    return bookDataMapper(data).filter((book) => {
+      return myList.some((savedBook) => {
+        return savedBook.ISBN !== book.ISBN;
+      });
+    });
+  });
+  console.log("final library : ", library);
 
   const addToList = (book) => {
     console.log("book :", book);
