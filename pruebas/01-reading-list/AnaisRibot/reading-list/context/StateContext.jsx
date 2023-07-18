@@ -11,41 +11,48 @@ const bookDataMapper = (data) => {
 };
 
 export const StateContext = ({ children }) => {
-  const [myList, setMyList] = useState(() => {
-    const saved = localStorage.getItem("myList");
-    const initialValue = JSON.parse(saved);
-    return initialValue || [];
-  });
-  console.log("library :", bookDataMapper(data));
-  console.log("my list : ", myList);
-  console.log(
-    "filtered library : ",
-    bookDataMapper(data).filter((book) => {
-      return myList.some((savedBook) => {
-        return savedBook.ISBN !== book.ISBN;
-      });
-    })
-  );
+  const [library, setLibrary] = useState(bookDataMapper(data));
+  const [savedList, setSavedList] = useState([]);
+  const [myList, setMyList] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState("");
 
-  const [library, setLibrary] = useState(() => {
-    return bookDataMapper(data).filter((book) => {
-      return myList.some((savedBook) => {
-        return savedBook.ISBN !== book.ISBN;
-      });
-    });
-  });
-  console.log("final library : ", library);
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("savedList"))) {
+      setSavedList(JSON.parse(localStorage.getItem("savedList")));
+    }
+  }, []);
+
+  useEffect(() => {
+    // storing book ISBN in localStorage
+    localStorage.setItem("savedList", JSON.stringify(savedList));
+
+    setLibrary(
+      bookDataMapper(data).filter((book) => {
+        return myList.indexOf(book) < 0;
+      })
+    );
+  }, [savedList]);
+
+  useEffect(() => {
+    // storing book ISBN in localStorage
+    setMyList(() =>
+      bookDataMapper(data).filter((book) => savedList.includes(book.ISBN))
+    );
+    setLibrary(
+      bookDataMapper(data).filter((book) => !savedList.includes(book.ISBN))
+    );
+  }, [savedList]);
+
+  const handleChangeGenre = (event) => {
+    setSelectedGenre(event.target.value);
+  };
 
   const addToList = (book) => {
-    console.log("book :", book);
-    library.map((test) => console.log("library book :", test));
     if (library.includes(book)) {
-      console.log("yyyeeeeeeeeeeeeesssssssssss");
-      setMyList((prev) => [...prev, book]);
       setLibrary((prev) => prev.filter((ref) => ref.ISBN !== book.ISBN));
+      setSavedList((prev) => [...prev, book.ISBN]);
     } else {
-      console.log("nnnoooooooooooooooo");
-      setMyList((prev) => prev.filter((ref) => ref.ISBN !== book.ISBN));
+      setSavedList((prev) => prev.filter((ref) => ref !== book.ISBN));
       setLibrary((prev) => [...prev, book]);
     }
   };
@@ -55,9 +62,14 @@ export const StateContext = ({ children }) => {
       value={{
         library,
         setLibrary,
+        savedList,
+        setSavedList,
+        addToList,
         myList,
         setMyList,
-        addToList,
+        handleChangeGenre,
+        selectedGenre,
+        setSelectedGenre,
       }}
     >
       {children}

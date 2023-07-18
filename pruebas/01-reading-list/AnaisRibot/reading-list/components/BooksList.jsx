@@ -1,6 +1,8 @@
 import Book from "./Book";
+import FilterByGenre from "./filter";
 
-const BooksList = ({ title, list }) => {
+const BooksList = ({ title, list, selectedGenre }) => {
+  console.log("selected genre in booklist =", selectedGenre);
   if (!list || list.length === 0)
     return (
       <section>
@@ -15,11 +17,15 @@ const BooksList = ({ title, list }) => {
   return (
     <section>
       <h1 className="mt-4 font-semibold text-lg  text-white truncate">
-        {title}
+        {title} ({list.length})
       </h1>
-      {list.map((book) => (
-        <Book key={book.ISBN} book={book} list={title} />
-      ))}
+      {title === "Library" && <FilterByGenre />}
+
+      {title === "Library" && selectedGenre !== ""
+        ? list
+            .filter((book) => book.genre === selectedGenre)
+            .map((book) => <Book key={book.ISBN} book={book} list={title} />)
+        : list.map((book) => <Book key={book.ISBN} book={book} list={title} />)}
     </section>
   );
 };
