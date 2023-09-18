@@ -9,7 +9,7 @@ export const metadata = {
 const layout = ({ children }) => {
   return (
     <html lang="en">
-      <body className="bg-gradient-to-tr from-black to-[#575757]">
+      <body className="bg-gradient-to-br from-black to-[#b9b9b9]">
         <StateContext>
           <main>{children}</main>
         </StateContext>

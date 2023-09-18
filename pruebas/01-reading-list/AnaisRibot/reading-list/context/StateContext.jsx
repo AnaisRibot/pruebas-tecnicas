@@ -17,6 +17,7 @@ export const StateContext = ({ children }) => {
   const [selectedGenre, setSelectedGenre] = useState("");
 
   useEffect(() => {
+    // get book list from local storage
     if (JSON.parse(localStorage.getItem("savedList"))) {
       setSavedList(JSON.parse(localStorage.getItem("savedList")));
     }
@@ -34,7 +35,7 @@ export const StateContext = ({ children }) => {
   }, [savedList]);
 
   useEffect(() => {
-    // storing book ISBN in localStorage
+    // update my list and library depending on local storage changes
     setMyList(() =>
       bookDataMapper(data).filter((book) => savedList.includes(book.ISBN))
     );

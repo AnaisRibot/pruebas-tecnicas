@@ -8,25 +8,27 @@ const Book = ({ book, list }) => {
   }
 
   return (
-    <div className="flex  flex-col p-4 backdrop-blur-sm animate-slideup rounded-lg cursor-pointer ">
+    <div className="flex flex-col w-[250px] mt-10 animate-slideup rounded-lg cursor-pointer ">
       <Image
         src={book.cover}
-        width={300}
-        height={0}
+        width={200}
+        height={300}
         alt="Picture of the author"
-        style={{ height: "auto" }}
-        className="  rounded-lg"
+        className="m-auto rounded-lg"
       />
 
-      <button onClick={handleClick}>
+      <button
+        onClick={handleClick}
+        className="rounded-full m-auto px-4 py-1 bg-gray-600 text-gray-200 hover:bg-gray-200 hover:text-gray-600 mt-3"
+      >
         {list === "Library" ? "add" : "remove"}
       </button>
 
-      <p className="mt-4 font-semibold text-lg  text-gray-500 truncate">
-        {book.title},{" "}
-        <span className="mt-4 italic text-gray-500 truncate">
-          {book.author.name}
-        </span>
+      <p className="mt-2 font-semibold text-lg text-decoration-solid text-gray-200 text-center">
+        {book.title}
+      </p>
+      <p className="text-center italic text-gray-200 truncate">
+        {book.author.name}
       </p>
     </div>
   );
